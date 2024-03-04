@@ -1,78 +1,40 @@
-// import {
-//   Card,
-//   Input,
-//   Checkbox,
-//   Button,
-//   Typography,
-// } from "@material-tailwind/react";
-// import { Link } from "react-router-dom";
- 
-export function Login() {
+import React from 'react'
+import {TextField, FormControlLabel, Checkbox, Button} from '@mui/material';
+import { Avatar } from "@material-tailwind/react";
+import {Link} from 'react-router-dom';
+
+const Login = () => {
   return (
-    <div className="flex justify-center my-9">
-     {/* <Card color="transparent" shadow={false}>
-      <Typography variant="h4" color="blue-gray">
-        Log In
-      </Typography>
-      <Typography color="gray" className="mt-1 font-normal">
-        Welcome Again! Please enter your details
-      </Typography>
-      <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
-        <div className="mb-1 flex flex-col gap-6">
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Your Email
-          </Typography>
-          <Input
-            size="lg"
-            placeholder="name@mail.com"
-            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-            labelProps={{
-              className: "before:content-none after:content-none",
-            }}
-          />
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Password
-          </Typography>
-          <Input
-            type="password"
-            size="lg"
-            placeholder="********"
-            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-            labelProps={{
-              className: "before:content-none after:content-none",
-            }}
-          />
-        </div>
-        <Checkbox
-          label={
-            <Typography
-              variant="small"
-              color="gray"
-              className="flex items-center font-normal"
-            >
-              I agree the
-              <a
-                href="#"
-                className="font-medium transition-colors hover:text-gray-900"
-              >
-                &nbsp;Terms and Conditions
-              </a>
-            </Typography>
-          }
-          containerProps={{ className: "-ml-2.5" }}
+    <div className='max-w-md mx-auto bg-white m-10 rounded p-6'>
+      <div className='h-12 w-12 mx-auto'>
+
+      <Avatar src="https://docs.material-tailwind.com/img/face-2.jpg" className='rounded-full' alt="avatar" />
+      </div>
+      <h2 className='text-2xl text-center font-medium mb-6'>Sign in</h2>
+      <form className='flex flex-col gap-5'>
+      <TextField
+          required
+          id="outlined-required"
+          label="Email Address"
+          variant="outlined"
+          className='w-full'
         />
-        <Button className="mt-6" fullWidth>
-          Login
-        </Button>
-        <Typography color="gray" className="mt-4 text-center font-normal">
-          Don't have an account?{" "}
-          <Link to="/signup" className="font-medium text-gray-900">
-            Sign Up
-          </Link>
-        </Typography>
+      <TextField
+          required
+          id="outlined-password-input"
+          label="Password"
+          type="password"
+          className='w-full'
+        />
+        <FormControlLabel control={<Checkbox defaultChecked />} label="Remember me" />
+        <Button type='submit' variant="contained"><b  style={{fontFamily: '"Roboto", sans-serif'}}>Sign In</b></Button>
+        <div className='flex justify-between font-normal text-[0.875rem] text-blue-600' style={{fontFamily: '"Roboto", sans-serif'}}>
+        <Link to="/signup" className='hover:underline'>Forgot password?</Link>
+        <Link to="/signup" className='hover:underline'>Don't have an account? Sign Up</Link>
+        </div>
       </form>
-    </Card> */}
     </div>
-  );
+  )
 }
+
 export default Login
