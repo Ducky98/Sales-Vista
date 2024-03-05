@@ -1,91 +1,88 @@
-// import React from 'react'
-// import {
-//   Card,
-//   Input,
-//   Checkbox,
-//   Button,
-//   Typography,
-// } from "@material-tailwind/react";
-// import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { TextField, Button, Grid } from "@mui/material";
+import { Avatar } from "@material-tailwind/react";
+import { Link } from "react-router-dom";
 
-const Register = () => {
+const SignUp = () => {
+  const [name, setName] = useState({ firstName: '', lastName: '' });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Name:", name);
+    console.log("Email:", email);
+    console.log("Password:", password);
+
+    // Perform further actions such as sending data to a server
+  };
+
   return (
-    <div className="flex justify-center my-9">
-     {/* <Card color="transparent" shadow={false}>
-      <Typography variant="h4" color="blue-gray">
-        Sign Up
-      </Typography>
-      <Typography color="gray" className="mt-1 font-normal">
-        Nice to meet you! Enter your details to register.
-      </Typography>
-      <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
-        <div className="mb-1 flex flex-col gap-6">
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Your Name
-          </Typography>
-          <Input
-            size="lg"
-            placeholder="name@mail.com"
-            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-            labelProps={{
-              className: "before:content-none after:content-none",
-            }}
-          />
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Your Email
-          </Typography>
-          <Input
-            size="lg"
-            placeholder="name@mail.com"
-            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-            labelProps={{
-              className: "before:content-none after:content-none",
-            }}
-          />
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Password
-          </Typography>
-          <Input
-            type="password"
-            size="lg"
-            placeholder="********"
-            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-            labelProps={{
-              className: "before:content-none after:content-none",
-            }}
-          />
-        </div>
-        <Checkbox
-          label={
-            <Typography
-              variant="small"
-              color="gray"
-              className="flex items-center font-normal"
-            >
-              I agree the
-              <a
-                href="#"
-                className="font-medium transition-colors hover:text-gray-900"
-              >
-                &nbsp;Terms and Conditions
-              </a>
-            </Typography>
-          }
-          containerProps={{ className: "-ml-2.5" }}
+    <div className="max-w-md mx-auto bg-white m-10 rounded p-6">
+      <div className="h-12 w-12 mx-auto">
+        <Avatar
+          src="https://docs.material-tailwind.com/img/face-2.jpg"
+          className="rounded-full"
+          alt="avatar"
         />
-        <Button className="mt-6" fullWidth>
-          sign up
+      </div>
+      <h2 className="text-2xl text-center font-medium mb-6">Sign Up</h2>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <TextField
+              required
+              id="outlined-firstname"
+              label="First Name"
+              variant="outlined"
+              className="w-full"
+              value={name.firstName}
+              onChange={(e) => setName({ ...name, firstName: e.target.value })}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              id="outlined-lastname"
+              label="Last Name"
+              variant="outlined"
+              className="w-full"
+              value={name.lastName}
+              onChange={(e) => setName({ ...name, lastName: e.target.value })}
+            />
+          </Grid>
+        </Grid>
+        <TextField
+          required
+          id="outlined-email"
+          label="Email Address"
+          variant="outlined"
+          className="w-full"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <TextField
+          required
+          id="outlined-password-input"
+          label="Password"
+          type="password"
+          className="w-full"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <Button type="submit" variant="contained">
+          <b style={{ fontFamily: '"Roboto", sans-serif' }}>Sign Up</b>
         </Button>
-        <Typography color="gray" className="mt-4 text-center font-normal">
-          Already have an account?{" "}
-          <Link to="/login" className="font-medium text-gray-900">
-            Sign In
+        <div
+          className="flex justify-between font-normal text-[0.875rem] text-blue-600"
+          style={{ fontFamily: '"Roboto", sans-serif' }}
+        >
+          <Link to="/login" className="hover:underline">
+            Already have an account? Sign In
           </Link>
-        </Typography>
+        </div>
       </form>
-    </Card> */}
     </div>
-  )
-}
+  );
+};
 
-export default Register
+export default SignUp;

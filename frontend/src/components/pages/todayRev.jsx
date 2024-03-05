@@ -63,7 +63,7 @@ const columns = [
 const rows = [
   { id: 1, product: 'David', amt: 324, price: 6000, dateCreated: '04/05/2023' },
   { id: 2, product: 'Alice', amt: 420, price: 7500, dateCreated: '04/05/2023' },
-  { id: 2, product: 'Alice', amt: 420, price: 7500, dateCreated: '04/05/2023' },
-  { id: 2, product: 'Alice', amt: 420, price: 7500, dateCreated: '04/05/2023' },
-  { id: 3, product: 'John', amt: 200, price: 3000, dateCreated: '04/05/2023' }
+  { id: 3, product: 'Alice', amt: 420, price: 7500, dateCreated: '04/05/2023' },
+  { id: 4, product: 'Alice', amt: 420, price: 7500, dateCreated: '04/05/2023' },
+  { id: 5, product: 'John', amt: 200, price: 3000, dateCreated: '04/05/2023' }
 ];
