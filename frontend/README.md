@@ -20,14 +20,10 @@ The project includes the following screens as per the provided design:
 
 To get started with the project, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/your-username/web-app-design.git`
+1. Clone the repository: `git clone https://github.com/Ducky98/Sales-Vista.git`
 2. Install dependencies: `npm install`
 3. Start the development server: `npm start`
 
 ## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request if you would like to contribute to the project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

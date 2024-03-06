@@ -10,7 +10,7 @@ import Navbar from './components/Navbar.jsx';
 
 function App() {
   return (
-    <div className="App bg-[#e7e7e7d1] w-full h-screen ">
+    <div className="App bg-gradient-to-br from-slate-800 via-violet-500 to-zinc-600 w-full h-screen ">
       <BrowserRouter>
         <Navbar />
         <Routes>
