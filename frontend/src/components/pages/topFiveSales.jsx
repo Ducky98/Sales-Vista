@@ -9,7 +9,7 @@ export default function topFiveSales() {
         initialState={{
           pagination: { paginationModel: { pageSize: 8 } },
         }}
-        pageSizeOptions={[8, 16, 24]}/>
+        pageSizeOptions={[8, 16, 24]} checkboxSelection/>
       </div>
     </div>
   );

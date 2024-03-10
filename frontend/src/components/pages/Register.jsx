@@ -14,7 +14,7 @@ const SignUp = () => {
     console.log("Email:", email);
     console.log("Password:", password);
 
-    // Perform further actions such as sending data to a server
+    
   };
 
   return (

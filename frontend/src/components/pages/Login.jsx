@@ -31,7 +31,6 @@ const Login = () => {
       localStorage.removeItem('rememberedEmail');
     }
 
-    // Perform further actions such as sending data to a server
   }
 
   return (
