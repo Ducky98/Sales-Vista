@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { FaTimes } from "react-icons/fa";
 
-const Navbar = () => {
+const Navbar = ({ loggedIn, handleLogout }) => {
   const [nav, setNav] = useState(false);
   const navRef = useRef();
 
@@ -23,7 +23,7 @@ const Navbar = () => {
   const toggleNav = () => {
     setNav((prevNav) => !prevNav);
   };
-
+  
   return (
     <nav className="bg-[#1a1a1a] p-4 px-8 flex justify-between mb-6" ref={navRef}>
       <Link to="/" className="text-2xl flex font-extrabold font-mono">
@@ -41,9 +41,13 @@ const Navbar = () => {
         <Link to="/topsales">
           <li>Top Sales</li>
         </Link>
-        <Link to="/login">
-          <li>Login</li>
-        </Link>
+        {loggedIn ? (
+          <li onClick={handleLogout} className="cursor-pointer">Log Out</li>
+        ) : (
+          <Link to="/login">
+            <li>Log In</li>
+          </Link>
+        )}
       </ul>
 
       <div className="md:hidden z-10 text-white" onClick={toggleNav}>
@@ -67,9 +71,15 @@ const Navbar = () => {
           <li>Top Sales</li>
         </Link>
         <div className="w-full border-b-2 border-neutral-800"></div>
-        <Link to="/login">
-          <li className="bg-slate-700 p-2 px-4 rounded-3xl">Login</li>
-        </Link>
+        {loggedIn ? (
+          <li onClick={handleLogout} className="bg-slate-700 p-2 px-4 rounded-3xl cursor-pointer">
+            Log Out
+          </li>
+        ) : (
+          <Link to="/login">
+            <li className="bg-slate-700 p-2 px-4 rounded-3xl">Log In</li>
+          </Link>
+        )}
       </ul>
     </nav>
   );

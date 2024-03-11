@@ -1,19 +1,34 @@
 import React, { useState } from "react";
 import { TextField, Button, Grid } from "@mui/material";
 import { Avatar } from "@material-tailwind/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 const SignUp = () => {
-  const [name, setName] = useState({ firstName: '', lastName: '' });
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleSubmit = (e) => {
+  const[data, setData] = useState({
+    firstName: "",
+    lastName:"",
+    email:"",
+    password:""
+  });
+  const navigate = useNavigate();
+  const[error, setError] = useState("")
+  const handleChange = ({currentTarget:input})=>{
+    setData({...data, [input.name]:input.value});
+  }
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log("Name:", name);
-    console.log("Email:", email);
-    console.log("Password:", password);
-
+    try {
+      const url = 'http://localhost:5000/api/user';
+       await axios.post(url, data);
+      navigate('/login')
+      // console.log(res.message);
+    } catch (error) {
+      if(error.response && 
+        error.response.status >= 400 && error.response.status <= 500){
+          setError(error.response.data.message);
+        }
+    }
     
   };
 
@@ -35,9 +50,10 @@ const SignUp = () => {
               id="outlined-firstname"
               label="First Name"
               variant="outlined"
+              name="firstName"
               className="w-full"
-              value={name.firstName}
-              onChange={(e) => setName({ ...name, firstName: e.target.value })}
+              value={data.firstName}
+              onChange={handleChange}
             />
           </Grid>
           <Grid item xs={6}>
@@ -45,9 +61,10 @@ const SignUp = () => {
               id="outlined-lastname"
               label="Last Name"
               variant="outlined"
+              name="lastName"
               className="w-full"
-              value={name.lastName}
-              onChange={(e) => setName({ ...name, lastName: e.target.value })}
+              value={data.lastName}
+              onChange={handleChange}
             />
           </Grid>
         </Grid>
@@ -56,9 +73,10 @@ const SignUp = () => {
           id="outlined-email"
           label="Email Address"
           variant="outlined"
+          name="email"
           className="w-full"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={data.email}
+          onChange={handleChange}
         />
         <TextField
           required
@@ -66,12 +84,14 @@ const SignUp = () => {
           label="Password"
           type="password"
           className="w-full"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          name="password"
+          value={data.password}
+          onChange={handleChange}
         />
         <Button type="submit" variant="contained">
           <b style={{ fontFamily: '"Roboto", sans-serif' }}>Sign Up</b>
         </Button>
+        {error && <div className="text-red-950">{error}</div>}
         <div
           className="flex justify-between font-normal text-[0.875rem] text-blue-600"
           style={{ fontFamily: '"Roboto", sans-serif' }}

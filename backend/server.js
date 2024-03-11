@@ -3,6 +3,9 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const connectionDB = require('./db');
+const userRoutes = require('./routes/user');
+const authRoutes = require('./routes/auth');
+const addSales = require('./routes/salesEntry');
 
 //Databse Connection
 connectionDB();
@@ -14,7 +17,9 @@ app.use(cors());
 //PORT
 const port = process.env.PORT || 5000;
 
-app.get('/', (req,res) =>{
-    res.status(200).end('Working');
-})
+app.use('/api/auth', authRoutes);
+app.use('/api/user', userRoutes);
+app.use('/api/sales', addSales);
+
+
 app.listen(port, () => console.log(`Server is active on  http://localhost:${port}`));

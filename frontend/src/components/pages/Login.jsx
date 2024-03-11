@@ -1,36 +1,41 @@
-import React, { useState, useEffect } from 'react';
-import {TextField, FormControlLabel, Checkbox, Button} from '@mui/material';
+import React, { useState } from 'react';
+import {TextField, Button} from '@mui/material';
 import { Avatar } from "@material-tailwind/react";
 import {Link} from 'react-router-dom';
+import axios from 'axios';
 
 const Login = () => {
   // State variables for email, password, and remember me checkbox
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
+  const [login, setlogin] = useState({
+    email:"",
+    password:""
+  });
+  const handleChange = ({currentTarget:input})=>{
+    setlogin({...login, [input.name]:input.value});
+  } 
+  const[error, setError] = useState("")
 
-  // Load remembered email from local storage when component mounts
-  useEffect(() => {
-    const rememberedEmail = localStorage.getItem('rememberedEmail');
-    if (rememberedEmail) {
-      setEmail(rememberedEmail);
-      setRememberMe(true);
-    }
-  }, []);
+
+  
 
   // Event handler for form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Email:", email);
-    console.log("Password:", password);
+    try {
+      const url = 'http://localhost:5000/api/auth';
+      const{ data :res} = await axios.post(url, login);
 
-    // Remember email if "Remember Me" is checked
-    if (rememberMe) {
-      localStorage.setItem('rememberedEmail', email);
-    } else {
-      localStorage.removeItem('rememberedEmail');
+      localStorage.setItem("tokenDetail", res.data);
+      localStorage.setItem("loginEmail", login.email);
+
+      window.location = '/';
+    } catch (error) {
+      if(error.response && 
+        error.response.status >= 400 && error.response.status <= 500){
+          setError(error.response.data.message);
+        }
     }
-
+    
   }
 
   return (
@@ -45,24 +50,23 @@ const Login = () => {
           id="outlined-required"
           label="Email Address"
           variant="outlined"
+          name='email'
           className='w-full'
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={login.email}
+          onChange={handleChange}
         />
         <TextField
           required
           id="outlined-password-input"
           label="Password"
           type="password"
+          name="password"
           className='w-full'
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <FormControlLabel
-          control={<Checkbox checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />}
-          label="Remember me"
+          value={login.password}
+          onChange={handleChange}
         />
         <Button type='submit' variant="contained"><b style={{fontFamily: '"Roboto", sans-serif'}}>Sign In</b></Button>
+        {error && <div className="text-red-950">{error}</div>}
         <div className='flex justify-between font-normal text-[0.875rem] text-blue-600' style={{fontFamily: '"Roboto", sans-serif'}}>
           <Link to="/signup" className='hover:underline'>Forgot password?</Link>
           <Link to="/signup" className='hover:underline'>Don't have an account? Sign Up</Link>
