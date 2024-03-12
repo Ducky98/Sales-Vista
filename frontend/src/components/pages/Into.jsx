@@ -1,26 +1,27 @@
 import React from "react";
 
 /**
- * Introduction component displaying project details and key steps.
+ * Introduction component displaying project details and key steps for Sales Vista.
  */
-const Into = () => {
+const Introduction = () => {
   return (
-    <div className="w-full mx-auto py-8 px-4 bg-white rounded md:max-w-lg">
-      <h1 className="text-3xl font-bold mb-4">Thought Note</h1>
+    <div className="w-full mx-auto py-8 px-4 bg-white rounded md:max-w-2xl">
+      <h1 className="text-3xl font-bold mb-4">Sales Vista</h1>
       <div className="text-justify">
         <p className="mb-4">
-          <b>Project Name:</b> Web App Design - Module Assignment
+          <b>Project Name:</b> Sales Vista
         </p>
         <p className="mb-4">
-          <b>Objective:</b> Create a responsive web application using React.js,
-          Material-UI, and Tailwind CSS as per the provided design.
+          <b>Objective:</b> Develop a sales entry web application using React.js, Material-UI, and Tailwind CSS for frontend, and Node.js, Express.js, JWT, and MongoDB (Mongoose) for backend.
         </p>
         <div className="mb-6">
           <h4 className="text-xl font-semibold mb-2">Key Steps:</h4>
           <ul className="list-disc list-inside">
-            <li>Created a new React JS application using create-react-app.</li>
+            <li>Set up a new React JS application using create-react-app.</li>
             <li>Integrated Material-UI and Tailwind CSS for styling and design.</li>
-            <li>Implementing responsive design principles effectively using Material-UI and Tailwind CSS.</li>
+            <li>Implemented user authentication using JWT.</li>
+            <li>Developed backend APIs using Node.js and Express.js for handling sales data.</li>
+            <li>Utilized MongoDB (Mongoose) for data storage.</li>
           </ul>
         </div>
         <div>
@@ -37,4 +38,4 @@ const Into = () => {
   );
 };
 
-export default Into;
+export default Introduction;
