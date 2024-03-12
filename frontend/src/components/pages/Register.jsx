@@ -4,32 +4,42 @@ import { Avatar } from "@material-tailwind/react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 
+/**
+ * Component for user sign up.
+ */
 const SignUp = () => {
-  const[data, setData] = useState({
+  const [data, setData] = useState({
     firstName: "",
-    lastName:"",
-    email:"",
-    password:""
+    lastName: "",
+    email: "",
+    password: ""
   });
   const navigate = useNavigate();
-  const[error, setError] = useState("")
-  const handleChange = ({currentTarget:input})=>{
-    setData({...data, [input.name]:input.value});
-  }
-  const handleSubmit = async(e) => {
+  const [error, setError] = useState("");
+
+  /**
+   * Function to handle input changes.
+   * @param {object} input - Event object
+   */
+  const handleChange = ({ currentTarget: input }) => {
+    setData({ ...data, [input.name]: input.value });
+  };
+
+  /**
+   * Function to handle form submission.
+   * @param {object} e - Event object
+   */
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const url = 'http://localhost:5000/api/user';
-       await axios.post(url, data);
-      navigate('/login')
-      // console.log(res.message);
+      const url = 'http://localhost:8080/api/user';
+      await axios.post(url, data);
+      navigate('/login');
     } catch (error) {
-      if(error.response && 
-        error.response.status >= 400 && error.response.status <= 500){
-          setError(error.response.data.message);
-        }
+      if (error.response && error.response.status >= 400 && error.response.status <= 500) {
+        setError(error.response.data.message);
+      }
     }
-    
   };
 
   return (
@@ -92,13 +102,8 @@ const SignUp = () => {
           <b style={{ fontFamily: '"Roboto", sans-serif' }}>Sign Up</b>
         </Button>
         {error && <div className="text-red-950">{error}</div>}
-        <div
-          className="flex justify-between font-normal text-[0.875rem] text-blue-600"
-          style={{ fontFamily: '"Roboto", sans-serif' }}
-        >
-          <Link to="/login" className="hover:underline">
-            Already have an account? Sign In
-          </Link>
+        <div className="flex justify-between font-normal text-[0.875rem] text-blue-600" style={{ fontFamily: '"Roboto", sans-serif' }}>
+          <Link to="/login" className="hover:underline">Already have an account? Sign In</Link>
         </div>
       </form>
     </div>

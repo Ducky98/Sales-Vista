@@ -1,8 +1,11 @@
 import React from "react";
 
+/**
+ * Introduction component displaying project details and key steps.
+ */
 const Into = () => {
   return (
-    <div className=" w-full mx-auto py-8 px-4 bg-white rounded md:max-w-lg">
+    <div className="w-full mx-auto py-8 px-4 bg-white rounded md:max-w-lg">
       <h1 className="text-3xl font-bold mb-4">Thought Note</h1>
       <div className="text-justify">
         <p className="mb-4">

@@ -1,11 +1,15 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef,useContext  } from "react";
 import { Link } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { FaTimes } from "react-icons/fa";
+import axios from "axios";
+import { loginContext } from '../App';
 
-const Navbar = ({ loggedIn, handleLogout }) => {
+const Navbar = () => {
   const [nav, setNav] = useState(false);
   const navRef = useRef();
+  // const navigate = useNavigate();
+  const {loggedIn, setLoggedIn} = useContext(loginContext);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -23,9 +27,23 @@ const Navbar = ({ loggedIn, handleLogout }) => {
   const toggleNav = () => {
     setNav((prevNav) => !prevNav);
   };
-  
+
+  const handleLogout = async () => {
+    try {
+      await axios.get("http://localhost:8080/api/logout", {
+        withCredentials: true, // Setting credentials to true
+      });
+      setLoggedIn(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <nav className="bg-[#1a1a1a] p-4 px-8 flex justify-between mb-6" ref={navRef}>
+    <nav
+      className="bg-[#1a1a1a] p-4 px-8 flex justify-between mb-6"
+      ref={navRef}
+    >
       <Link to="/" className="text-2xl flex font-extrabold font-mono">
         <div className="text-white">Sales</div>
         <div className="text-red-500">Vista</div>
@@ -42,11 +60,11 @@ const Navbar = ({ loggedIn, handleLogout }) => {
           <li>Top Sales</li>
         </Link>
         {loggedIn ? (
-          <li onClick={handleLogout} className="cursor-pointer">Log Out</li>
+          <li onClick={handleLogout} className="cursor-pointer">
+            Log Out
+          </li>
         ) : (
-          <Link to="/login">
-            <li>Log In</li>
-          </Link>
+          <Link to="/login"><li>Login</li></Link>
         )}
       </ul>
 
@@ -72,13 +90,17 @@ const Navbar = ({ loggedIn, handleLogout }) => {
         </Link>
         <div className="w-full border-b-2 border-neutral-800"></div>
         {loggedIn ? (
-          <li onClick={handleLogout} className="bg-slate-700 p-2 px-4 rounded-3xl cursor-pointer">
+          <li
+            onClick={handleLogout}
+            className="bg-slate-700 p-2 px-4 rounded-3xl cursor-pointer"
+          >
             Log Out
           </li>
         ) : (
           <Link to="/login">
-            <li className="bg-slate-700 p-2 px-4 rounded-3xl">Log In</li>
-          </Link>
+          <li className="bg-slate-700 p-2 px-4 rounded-3xl cursor-pointer">
+            Log In
+          </li></Link>
         )}
       </ul>
     </nav>

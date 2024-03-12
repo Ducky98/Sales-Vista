@@ -1,51 +1,56 @@
-const express = require('express');
-const router = express.Router();
-const Joi = require('joi');
-const jwt = require('jsonwebtoken');
+const verifyToken = require('./jwtVarificationMiddleware');
+const { User } = require('../models/user');
+const router = require('express').Router();
+const mongoose = require('mongoose');
 
-const secret = process.env.JWTPRIVATEKEY; // Replace with your secret key (stored securely)
+// Define schema for sales
+const saleSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'UserDatas',
+    required: true,
+  },
+  productName: {
+    type: String,
+    required: true,
+  },
+  productQty: {
+    type: Number,
+    required: true,
+  },
+  amount: {
+    type: Number,
+    required: true,
+  },
+}, { timestamps: true }); // Include timestamps for each sale
 
-const verifyToken = (req, res, next) => {
-  const token = req.headers['authorization']; // Assuming token is in Authorization header
-
-  if (!token) {
-    return res.status(401).json({ message: 'Unauthorized: No token provided' });
-  }
-
-  jwt.verify(token, secret, (err, decoded) => {
-    if (err) {
-      return res.status(403).json({ message: 'Forbidden: Invalid token' });
-    }
-    req.userId = decoded.userId; // Store user ID for further use (if applicable)
-    next();
-  });
-};
-
-// Define your validation schema
-const schema = Joi.object({
-  productName: Joi.string().required(),
-  productQty: Joi.number().integer().required(),
-  amount: Joi.number().integer().required(),
-  id: Joi.string().email().required(),
-  datTime: Joi.string().isoDate().required(),
-});
-
-// Apply the verifyToken middleware before processing the request
-router.post('/', verifyToken, async (req, res) => {
+// Route to add a new sale
+router.post("/", verifyToken, async (req, res) => {
   try {
-    // Get current time and calculate IST offset manually (adjust if DST applies)
-    const now = new Date();
-    const ISTOffset = 330 * 60 * 1000; // Offset for IST (UTC+05:30) in milliseconds
-    const nowIST = new Date(now.getTime() + ISTOffset);
-    const formattedIST = nowIST.toISOString().slice(0, 19).replace('T', ' ');
-    req.datTime = formattedIST;
-    console.log(req.body)
+    const { productName, productQty, amount } = req.body;
+    const userId = req.userId;
+    const existingUser = await User.findById(userId);
 
-    res.json({ message: 'Data processed successfully' });
+    const SaleDetails = mongoose.model(existingUser.email, saleSchema);
 
+    if (productName && productQty && amount && userId) {
+      const sale = {
+        userId, // Ensure unique numbering
+        productName,
+        productQty,
+        amount,
+      };
+      const newSale = new SaleDetails(sale);
+
+      await newSale.save(); // Wait for the save operation to complete before proceeding
+
+      return res.status(201).json({ message: "Sale added" });
+    } else {
+      return res.status(400).json({ message: "Bad request" });
+    }
   } catch (error) {
-    console.error('Unexpected error:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    console.error("Error creating sale:", error);
+    return res.status(500).json({ message: "Server Error", error: error.message });
   }
 });
 

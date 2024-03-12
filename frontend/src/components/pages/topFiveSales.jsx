@@ -1,20 +1,62 @@
 import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+import moment from 'moment';
 
-export default function topFiveSales() {
+// Component to display the top five sales data
+export default function TopFiveSales() {
+  // State variables for holding data, loading status, and error handling
+  const [rows, setRows] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  // Fetch data from the server when the component mounts
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true); // Set loading status to true while fetching data
+      setError(null); // Clear any previous errors
+
+      try {
+        // Fetch data from the server using Axios
+        const response = await axios.get('http://localhost:8080/api/topsales', {
+          withCredentials: true, // Include cookies if necessary
+        });
+        
+        // Update state with the fetched data
+        setRows(response.data);
+      } catch (error) {
+        // Log and handle any errors that occur during data fetching
+        console.error('Error fetching data:', error);
+        setError(error); // Set error state for handling
+      } finally {
+        setIsLoading(false); // Reset loading status regardless of success or failure
+      }
+    };
+
+    fetchData(); // Call the fetchData function
+  }, []); // Empty dependency array ensures this effect runs only once on mount
+
+  // Render the component
   return (
-    <div className='max-w-[40rem] mx-auto p-4 md:p-10'>
+    <div className="max-w-[40rem] mx-auto p-4 md:p-10">
       <div style={{ height: 526, width: '100%', background: 'white' }}>
-        <DataGrid rows={rows} columns={columns} 
-        initialState={{
-          pagination: { paginationModel: { pageSize: 8 } },
-        }}
-        pageSizeOptions={[8, 16, 24]} checkboxSelection/>
+        {/* Display loading indicator or error message conditionally */}
+        {isLoading && <p>Loading data...</p>}
+        {error && <p>Error: {error.message}</p>}
+        {/* Render the data grid component */}
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          initialState={{ pagination: { paginationModel: { pageSize: 8 } } }}
+          pageSizeOptions={[8, 16, 24]}
+        />
       </div>
     </div>
   );
 }
 
+// Column configuration for the data grid
 const columns = [
   { field: 'product', headerName: 'Product', width: 180, editable: false },
   {
@@ -32,40 +74,19 @@ const columns = [
     type: 'number',
     width: 90,
     editable: true,
+    // Custom renderer for displaying currency symbol
     renderCell: (params) => (
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        ₹ {params.value}
-      </div>
+      <div style={{ display: 'flex', alignItems: 'center' }}>₹ {params.value}</div>
     ),
   },
   {
     field: 'dateCreated',
     headerName: 'Date (MM/DD/YYYY)',
-    type: 'date',
+    type: 'string',
     width: 180,
-    editable: true,
     headerAlign: 'right',
     align: 'right',
-    valueGetter: (params) => new Date(params.value),
-  }
-];
-
-const rows = [
-  { id: 1, product: 'David', amt: 324, price: 6000, dateCreated: '11/05/2023' },
-  { id: 2, product: 'Alice', amt: 420, price: 7500, dateCreated: '12/06/2023' },
-  { id: 3, product: 'John', amt: 200, price: 3000, dateCreated: '05/07/2023' },
-  { id: 4, product: 'Ella', amt: 550, price: 9000, dateCreated: '09/08/2023' },
-  { id: 5, product: 'Michael', amt: 350, price: 5500, dateCreated: '03/10/2023' },
-  { id: 6, product: 'Sara', amt: 280, price: 4300, dateCreated: '07/11/2023' },
-  { id: 7, product: 'Emma', amt: 380, price: 7800, dateCreated: '02/12/2023' },
-  { id: 8, product: 'James', amt: 290, price: 6200, dateCreated: '01/01/2024' },
-  { id: 9, product: 'Sophia', amt: 470, price: 8800, dateCreated: '05/02/2024' },
-  { id: 10, product: 'William', amt: 390, price: 7200, dateCreated: '09/03/2024' },
-  { id: 11, product: 'Olivia', amt: 420, price: 7600, dateCreated: '12/04/2024' },
-  { id: 12, product: 'Benjamin', amt: 460, price: 9200, dateCreated: '05/05/2024' },
-  { id: 13, product: 'Ava', amt: 410, price: 7400, dateCreated: '12/06/2024' },
-  { id: 14, product: 'Lucas', amt: 340, price: 6800, dateCreated: '11/07/2024' },
-  { id: 15, product: 'Isabella', amt: 380, price: 8200, dateCreated: '12/08/2024' },
-  { id: 16, product: 'Mason', amt: 450, price: 8900, dateCreated: '10/09/2024' },
-  { id: 17, product: 'Mia', amt: 320, price: 6400, dateCreated: '03/10/2024' }
+    // Custom value getter to format date using moment.js
+    valueGetter: (params) => moment(new Date(params.value)).format('MMM Do YYYY'),
+  },
 ];
